@@ -1,32 +1,23 @@
 import { Schema, model } from "mongoose";
 
-const ClientSchema = new Schema(
+const clentSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    phoneNumber: {
-      type: String,
-      unique: true,
-      required: true,
-      trim: true,
-    },
-    address: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    hashedPassword: {
-      type: String,
-      required: true,
-    },
+    name: { type: String, required: true },
+    phoneNumber: { type: String, required: true, unique: true },
+    address: { type: String, required: true },
+    password: { type: String, required: true },
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+clentSchema.virtual("solid", {
+  ref: "SolidProduct",
+  localField: "_id",
+  foreignField: "clentId",
+});
 
-const Client = model("Client", ClientSchema);
-export default Client;
+const Clent = model("Clent", clentSchema);
+export default Clent;

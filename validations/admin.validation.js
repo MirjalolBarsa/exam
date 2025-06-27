@@ -1,45 +1,55 @@
 import Joi from "joi";
 
 export const createAdminValidator = (data) => {
-  const schema = Joi.object({
-    username: Joi.string().min(4).max(30).required(),
-    email: Joi.string().email().required(),
-    phoneNumber: Joi.string()
-      .pattern(/^\+998\d{9}$/)
-      .required()
-      .messages({
-        "string.pattern.base":
-          "Telefon raqam +998 bilan boshlanib, 9 ta raqam bo‘lishi kerak",
-      }),
+  const admin = Joi.object({
+    username: Joi.string().required(),
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail\.com$/)
+      .required(),
+    phone: Joi.string()
+      .regex(/^\+99\d{7,12}$/)
+      .required(),
     password: Joi.string()
-      .pattern(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.,?/\\\-])[A-Za-z\d!@#$%^&*.,?/\\\-]{8,20}$/
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
       )
-      .required()
-      .messages({
-        "string.pattern.base":
-          `Parol kamida 8 ta belgidan iborat bo‘lishi, katta harf, kichik harf, raqam va belgi o‘z ichiga olishi kerak`,
-      }),
-    role: Joi.string().valid("admin", "superadmin").optional(),
+      .required(),
   });
-
-  return schema.validate(data, { abortEarly: false });
+  return admin.validate(data);
 };
 
-export const signInAdminValidator = (data) => {
+export const signinAdminValidator = (data) => {
   const admin = Joi.object({
-    username: Joi.string().min(4).required(),
-    password: Joi.string().required(),
+    username: Joi.string().required(),
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail\.com$/)
+      .required(),
+  });
+  return admin.validate(data);
+};
+export const confirmSigninAdminValidator = (data) => {
+  const admin = Joi.object({
+    username: Joi.string().required(),
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail\.com$/)
+      .required(),
+    otp: Joi.string().length(6).required(),
   });
   return admin.validate(data);
 };
 
 export const updateAdminValidator = (data) => {
   const admin = Joi.object({
-    username: Joi.string().min(4).optional(),
+    username: Joi.string().optional(),
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail\.com$/)
+      .optional(),
+    phone: Joi.string()
+      .regex(/^\+99\d{7,12}$/)
+      .optional(),
     password: Joi.string()
-      .pattern(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.,?/\\\-])[A-Za-z\d!@#$%^&*.,?/\\\-]{8,20}$/
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
       )
       .optional(),
   });

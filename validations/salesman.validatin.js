@@ -4,51 +4,47 @@ export const createSalesmanValidator = (data) => {
   const salesman = Joi.object({
     username: Joi.string().min(4).required(),
     fullName: Joi.string().required(),
+    phoneNumber: Joi.string().regex(/^\+99\d{7,12}$/),
     address: Joi.string().required(),
-    email: Joi.string().email().required(),
-    phoneNumber: Joi.string()
-      .regex(/^\+998[-\s]?\(?\d{2}\)?[-\s]?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/)
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail.com$/)
       .required(),
-    password: Joi.string().required(),
+    password: Joi.string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
+      )
+      .required(),
+  });
+  return salesman.validate(data);
+};
+export const signinSalesmanValidator = (data) => {
+  const salesman = Joi.object({
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail\.com$/)
+      .required(),
+    password: Joi.string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
+      )
+      .required(),
   });
   return salesman.validate(data);
 };
 
-export const signUpSalesmanValidator = (data) => {
-  const customer = Joi.object({
-    phoneNumber: Joi.string()
-      .regex(/^\+998\s?(9[012345789]|3[3]|7[1])\s?\d{3}\s?\d{2}\s?\d{2}$/)
-      .required(),
-    email: Joi.string().email().required(),
-  });
-  return customer.validate(data);
-};
-
-export const signInSalesmanValidator = (data) => {
-  const customer = Joi.object({
-    email: Joi.string().required(),
-  });
-  return customer.validate(data);
-};
-
-export const confirmSignInSalesmanValidator = (data) => {
-  const customer = Joi.object({
-    email: Joi.string().email().required(),
-    otp: Joi.string().length(6).required(),
-  });
-  return customer.validate(data);
-};
-
 export const updateSalesmanValidator = (data) => {
-  const customer = Joi.object({
-    username: Joi.string().min(4).required(),
-    fullName: Joi.string().required().optional(),
-    address: Joi.string().required().optional(),
-    email: Joi.string().email().required(),
-    phoneNumber: Joi.string()
-      .regex(/^\+998[-\s]?\(?\d{2}\)?[-\s]?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/)
-      .required(),
-    password: Joi.string().required().optional(),
+  const salesman = Joi.object({
+    username: Joi.string().min(4).optional(),
+    fullName: Joi.string().optional(),
+    phoneNumber: Joi.string().regex(/^\+99\d{7,12}$/),
+    address: Joi.string().optional(),
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9]+@gmail\.com$/)
+      .optional(),
+    password: Joi.string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
+      )
+      .optional(),
   });
-  return customer.validate(data);
+  return salesman.validate(data);
 };

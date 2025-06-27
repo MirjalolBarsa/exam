@@ -2,16 +2,16 @@ import Joi from "joi";
 
 export const createCategoryValidator = (data) => {
   const category = Joi.object({
-    name: Joi.string().trim().required(),
-    description: Joi.string().trim().allow(""),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
   });
   return category.validate(data);
 };
 
 export const updateCategoryValidator = (data) => {
   const category = Joi.object({
-    name: Joi.string().trim().required(),
-    description: Joi.string().trim().allow("").optional(),
+    name: Joi.string().optional(),
+    description: Joi.string().optional(),
   });
   return category.validate(data);
 };

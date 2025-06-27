@@ -1,41 +1,27 @@
 import { Schema, model } from "mongoose";
 
-const SalesmanSchema = new Schema(
+const salesmanSchema = new Schema(
   {
-    username: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    fullName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    phoneNumber: {
-      type: String,
-      reuired: true,
-      trim: true,
-      match: /^\+998\d{9}$/,
-    },
-    address: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-      trim: true,
-    },
-    hashedPassword: {
-      type: String,
-      required: true,
-    },
+    username: { type: String, unique: true, required: true },
+    fullName: { type: String, required: true },
+    phoneNumber: { type: String, required: true, unique: true },
+    address: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
-const Salesman = model("Salesman", SalesmanSchema);
+salesmanSchema.virtual("products", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "salesmanId",
+});
+
+const Salesman = model("Salesman", salesmanSchema);
+
 export default Salesman;

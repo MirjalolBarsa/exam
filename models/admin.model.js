@@ -1,13 +1,18 @@
 import { Schema, model } from "mongoose";
 
-const AdminSchema = new Schema(
+const adminSchema = new Schema(
   {
-    username: { type: String, unique: true, required: true },
-    hashedPassword: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    phone: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     role: { type: String, enum: ["superadmin", "admin"], default: "admin" },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-const Admin = model("Admin", AdminSchema);
+const Admin = model("Admin", adminSchema);
+
 export default Admin;

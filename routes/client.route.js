@@ -1,11 +1,24 @@
 import { Router } from "express";
-import { ClientController } from "../controllers/client.controller.js";
+import { ClentController } from "../controllers/client.controller.js";
+import { AuthGuard } from "../guards/auth.guard.js";
+import { RolesGuard } from "../guards/roles.guard.js";
+import { SelfGuard } from "../guards/self.guard.js";
 
+const controller = new ClentController();
 const router = Router();
-const controller = new ClientController();
 
-router.post("/signup", controller.signInClient);
-router.post("/signin", controller.signInClient);
-router.post("/logout", controller.logoutClient);
+router
+  .post("/", controller.creatClent)
+  .post("/signin", controller.signinClent)
+  .post("/logout", AuthGuard, SelfGuard, controller.logoutClent)
+  .get("/", AuthGuard, RolesGuard(["superadmin"]), controller.getAllClents)
+  .get("/:id", AuthGuard, SelfGuard, controller.getClentById)
+  .patch("/:id", AuthGuard, SelfGuard, controller.updateClent)
+  .delete(
+    "/:id",
+    AuthGuard,
+    RolesGuard(["superadmin"]),
+    controller.deleteClent
+  );
 
 export default router;
