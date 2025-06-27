@@ -7,6 +7,7 @@ import CategoryRouter from "./routes/category.route.js";
 import SalesmanRouter from "./routes/salesman.route.js";
 import ProductRouter from "./routes/product.route.js";
 import ClientRouter from "./routes/client.route.js";
+import SolidProductRouter from "./routes/solidProduct.route.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/category", CategoryRouter);
 app.use("/salesman", SalesmanRouter);
 app.use("/product", ProductRouter);
 app.use("/client", ClientRouter);
+app.use("/soldproduct", SolidProductRouter);
 
 app.listen(config.PORT, () =>
   console.log(`Server is running on port http://localhost:${config.PORT}`)
